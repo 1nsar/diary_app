@@ -1,0 +1,128 @@
+<html>
+<head>
+<title>infomatrix-spectrum.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #7a7e85;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #cf8e6d;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+infomatrix-spectrum.py</font>
+</center></td></tr></table>
+<pre><span class="s0"># Welcome to the Personal Diary</span>
+<span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Welcome to the Personal Diary, to create a new diary memory input your message!&quot;</span><span class="s2">)</span>
+
+<span class="s4">import </span><span class="s1">json</span>
+<span class="s4">import </span><span class="s1">os</span>
+<span class="s4">from </span><span class="s1">datetime </span><span class="s4">import </span><span class="s1">datetime</span>
+
+<span class="s1">diary_file </span><span class="s2">= </span><span class="s3">&quot;diary.json&quot;</span>
+
+
+<span class="s4">def </span><span class="s1">load_entries</span><span class="s2">():</span>
+    <span class="s4">if </span><span class="s1">os</span><span class="s2">.</span><span class="s1">path</span><span class="s2">.</span><span class="s1">exists</span><span class="s2">(</span><span class="s1">diary_file</span><span class="s2">):</span>
+        <span class="s4">with </span><span class="s1">open</span><span class="s2">(</span><span class="s1">diary_file</span><span class="s2">, </span><span class="s3">&quot;r&quot;</span><span class="s2">) </span><span class="s4">as </span><span class="s1">file</span><span class="s2">:</span>
+            <span class="s4">return </span><span class="s1">json</span><span class="s2">.</span><span class="s1">load</span><span class="s2">(</span><span class="s1">file</span><span class="s2">)</span>
+    <span class="s4">return </span><span class="s2">[]</span>
+
+
+<span class="s4">def </span><span class="s1">save_entries</span><span class="s2">(</span><span class="s1">entries</span><span class="s2">):</span>
+    <span class="s4">with </span><span class="s1">open</span><span class="s2">(</span><span class="s1">diary_file</span><span class="s2">, </span><span class="s3">&quot;w&quot;</span><span class="s2">) </span><span class="s4">as </span><span class="s1">file</span><span class="s2">:</span>
+        <span class="s1">json</span><span class="s2">.</span><span class="s1">dump</span><span class="s2">(</span><span class="s1">entries</span><span class="s2">, </span><span class="s1">file</span><span class="s2">, </span><span class="s1">indent</span><span class="s2">=</span><span class="s5">4</span><span class="s2">)</span>
+
+
+<span class="s4">def </span><span class="s1">add_entry</span><span class="s2">():</span>
+    <span class="s1">title </span><span class="s2">= </span><span class="s1">input</span><span class="s2">(</span><span class="s3">&quot;Enter title: &quot;</span><span class="s2">)</span>
+    <span class="s1">content </span><span class="s2">= </span><span class="s1">input</span><span class="s2">(</span><span class="s3">&quot;Enter content: &quot;</span><span class="s2">)</span>
+    <span class="s1">date </span><span class="s2">= </span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">now</span><span class="s2">().</span><span class="s1">strftime</span><span class="s2">(</span><span class="s3">&quot;%Y-%m-%d %H:%M:%S&quot;</span><span class="s2">)</span>
+    <span class="s1">entries </span><span class="s2">= </span><span class="s1">load_entries</span><span class="s2">()</span>
+    <span class="s1">entry </span><span class="s2">= {</span><span class="s3">&quot;id&quot;</span><span class="s2">: </span><span class="s1">len</span><span class="s2">(</span><span class="s1">entries</span><span class="s2">) + </span><span class="s5">1</span><span class="s2">, </span><span class="s3">&quot;title&quot;</span><span class="s2">: </span><span class="s1">title</span><span class="s2">, </span><span class="s3">&quot;date&quot;</span><span class="s2">: </span><span class="s1">date</span><span class="s2">, </span><span class="s3">&quot;content&quot;</span><span class="s2">: </span><span class="s1">content</span><span class="s2">}</span>
+    <span class="s1">entries</span><span class="s2">.</span><span class="s1">append</span><span class="s2">(</span><span class="s1">entry</span><span class="s2">)</span>
+    <span class="s1">save_entries</span><span class="s2">(</span><span class="s1">entries</span><span class="s2">)</span>
+    <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Entry added successfully!&quot;</span><span class="s2">)</span>
+
+
+<span class="s4">def </span><span class="s1">list_entries</span><span class="s2">():</span>
+    <span class="s1">entries </span><span class="s2">= </span><span class="s1">load_entries</span><span class="s2">()</span>
+    <span class="s4">if not </span><span class="s1">entries</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;No diary entries found.&quot;</span><span class="s2">)</span>
+        <span class="s4">return</span>
+    <span class="s4">for </span><span class="s1">entry </span><span class="s4">in </span><span class="s1">entries</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">f&quot;[</span><span class="s4">{</span><span class="s1">entry</span><span class="s2">[</span><span class="s3">'id'</span><span class="s2">]</span><span class="s4">}</span><span class="s3">] </span><span class="s4">{</span><span class="s1">entry</span><span class="s2">[</span><span class="s3">'date'</span><span class="s2">]</span><span class="s4">} </span><span class="s3">- </span><span class="s4">{</span><span class="s1">entry</span><span class="s2">[</span><span class="s3">'title'</span><span class="s2">]</span><span class="s4">}</span><span class="s3">&quot;</span><span class="s2">)</span>
+
+
+<span class="s4">def </span><span class="s1">view_entry</span><span class="s2">():</span>
+    <span class="s1">entry_id </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">input</span><span class="s2">(</span><span class="s3">&quot;Enter entry ID: &quot;</span><span class="s2">))</span>
+    <span class="s1">entries </span><span class="s2">= </span><span class="s1">load_entries</span><span class="s2">()</span>
+    <span class="s1">entry </span><span class="s2">= </span><span class="s1">next</span><span class="s2">((</span><span class="s1">e </span><span class="s4">for </span><span class="s1">e </span><span class="s4">in </span><span class="s1">entries </span><span class="s4">if </span><span class="s1">e</span><span class="s2">[</span><span class="s3">&quot;id&quot;</span><span class="s2">] == </span><span class="s1">entry_id</span><span class="s2">), </span><span class="s4">None</span><span class="s2">)</span>
+    <span class="s4">if </span><span class="s1">entry</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">f&quot;</span><span class="s4">\n</span><span class="s3">Title: </span><span class="s4">{</span><span class="s1">entry</span><span class="s2">[</span><span class="s3">'title'</span><span class="s2">]</span><span class="s4">}\n</span><span class="s3">Date: </span><span class="s4">{</span><span class="s1">entry</span><span class="s2">[</span><span class="s3">'date'</span><span class="s2">]</span><span class="s4">}\n</span><span class="s3">Content: </span><span class="s4">{</span><span class="s1">entry</span><span class="s2">[</span><span class="s3">'content'</span><span class="s2">]</span><span class="s4">}\n</span><span class="s3">&quot;</span><span class="s2">)</span>
+    <span class="s4">else</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Entry not found.&quot;</span><span class="s2">)</span>
+
+
+<span class="s4">def </span><span class="s1">update_entry</span><span class="s2">():</span>
+    <span class="s1">entry_id </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">input</span><span class="s2">(</span><span class="s3">&quot;Enter entry ID to update: &quot;</span><span class="s2">))</span>
+    <span class="s1">entries </span><span class="s2">= </span><span class="s1">load_entries</span><span class="s2">()</span>
+    <span class="s4">for </span><span class="s1">entry </span><span class="s4">in </span><span class="s1">entries</span><span class="s2">:</span>
+        <span class="s4">if </span><span class="s1">entry</span><span class="s2">[</span><span class="s3">&quot;id&quot;</span><span class="s2">] == </span><span class="s1">entry_id</span><span class="s2">:</span>
+            <span class="s1">entry</span><span class="s2">[</span><span class="s3">&quot;title&quot;</span><span class="s2">] = </span><span class="s1">input</span><span class="s2">(</span><span class="s3">&quot;Enter new title: &quot;</span><span class="s2">) </span><span class="s4">or </span><span class="s1">entry</span><span class="s2">[</span><span class="s3">&quot;title&quot;</span><span class="s2">]</span>
+            <span class="s1">entry</span><span class="s2">[</span><span class="s3">&quot;content&quot;</span><span class="s2">] = </span><span class="s1">input</span><span class="s2">(</span><span class="s3">&quot;Enter new content: &quot;</span><span class="s2">) </span><span class="s4">or </span><span class="s1">entry</span><span class="s2">[</span><span class="s3">&quot;content&quot;</span><span class="s2">]</span>
+            <span class="s1">save_entries</span><span class="s2">(</span><span class="s1">entries</span><span class="s2">)</span>
+            <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Entry updated successfully!&quot;</span><span class="s2">)</span>
+            <span class="s4">return</span>
+    <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Entry not found.&quot;</span><span class="s2">)</span>
+
+
+<span class="s4">def </span><span class="s1">delete_entry</span><span class="s2">():</span>
+    <span class="s1">entry_id </span><span class="s2">= </span><span class="s1">int</span><span class="s2">(</span><span class="s1">input</span><span class="s2">(</span><span class="s3">&quot;Enter entry ID to delete: &quot;</span><span class="s2">))</span>
+    <span class="s1">entries </span><span class="s2">= </span><span class="s1">load_entries</span><span class="s2">()</span>
+    <span class="s1">entries </span><span class="s2">= [</span><span class="s1">e </span><span class="s4">for </span><span class="s1">e </span><span class="s4">in </span><span class="s1">entries </span><span class="s4">if </span><span class="s1">e</span><span class="s2">[</span><span class="s3">&quot;id&quot;</span><span class="s2">] != </span><span class="s1">entry_id</span><span class="s2">]</span>
+    <span class="s1">save_entries</span><span class="s2">(</span><span class="s1">entries</span><span class="s2">)</span>
+    <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Entry deleted successfully!&quot;</span><span class="s2">)</span>
+
+
+<span class="s4">def </span><span class="s1">main</span><span class="s2">():</span>
+    <span class="s4">while True</span><span class="s2">:</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Personal Diary - Spectrum Team&quot;</span><span class="s2">)</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;1. Create Entry&quot;</span><span class="s2">)</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;2. List Entries&quot;</span><span class="s2">)</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;3. View (display) Entry&quot;</span><span class="s2">)</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;4. Update Entry&quot;</span><span class="s2">)</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;5. Delete Entry&quot;</span><span class="s2">)</span>
+        <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;6. Exit&quot;</span><span class="s2">)</span>
+        <span class="s1">choice </span><span class="s2">= </span><span class="s1">input</span><span class="s2">(</span><span class="s3">&quot;Choose an option: &quot;</span><span class="s2">)</span>
+
+        <span class="s4">if </span><span class="s1">choice </span><span class="s2">== </span><span class="s3">&quot;1&quot;</span><span class="s2">:</span>
+            <span class="s1">add_entry</span><span class="s2">()</span>
+        <span class="s4">elif </span><span class="s1">choice </span><span class="s2">== </span><span class="s3">&quot;2&quot;</span><span class="s2">:</span>
+            <span class="s1">list_entries</span><span class="s2">()</span>
+        <span class="s4">elif </span><span class="s1">choice </span><span class="s2">== </span><span class="s3">&quot;3&quot;</span><span class="s2">:</span>
+            <span class="s1">view_entry</span><span class="s2">()</span>
+        <span class="s4">elif </span><span class="s1">choice </span><span class="s2">== </span><span class="s3">&quot;4&quot;</span><span class="s2">:</span>
+            <span class="s1">update_entry</span><span class="s2">()</span>
+        <span class="s4">elif </span><span class="s1">choice </span><span class="s2">== </span><span class="s3">&quot;5&quot;</span><span class="s2">:</span>
+            <span class="s1">delete_entry</span><span class="s2">()</span>
+        <span class="s4">elif </span><span class="s1">choice </span><span class="s2">== </span><span class="s3">&quot;6&quot;</span><span class="s2">:</span>
+            <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Goodbye!&quot;</span><span class="s2">)</span>
+            <span class="s4">break</span>
+        <span class="s4">else</span><span class="s2">:</span>
+            <span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Invalid choice. Please try again.&quot;</span><span class="s2">)</span>
+
+
+<span class="s4">if </span><span class="s1">__name__ </span><span class="s2">== </span><span class="s3">&quot;__main__&quot;</span><span class="s2">:</span>
+    <span class="s1">main</span><span class="s2">()</span>
+
+
+
+</pre>
+</body>
+</html>
